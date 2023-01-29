@@ -1,0 +1,31 @@
+{
+  "name": "imclient",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "electron .",
+    "win-build": "electron-builder --win",
+    "mac-build": "electron-builder --macos"
+  },
+  "mac": {
+    "icon": "images/icon-mac.icns"
+  },
+  "win": {
+    "icon": "images/win-ico.ico"
+  },
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "electron-packager": "^15.5.1",
+    "electron-store": "^8.1.0",
+    "jquery": "^3.6.0",
+    "node-fetch": "^3.3.0",
+    "node-machine-id": "^1.1.12",
+    "systeminformation": "^5.11.14"
+  },
+  "devDependencies": {
+    "electron": "^22.1.0"
+  }
+}

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <link href="./styles/styles.css" rel="stylesheet">
+    <title>IMClient</title>
+</head>
+
+<body >
+    <div class="app">
+       <div class="menu">
+            <h1 class="logo">IMCLIENT</h1>
+            <a class="btn-styled" onclick="page('accounts')">Аккаунты</a>
+            <a class="btn-styled" onclick="page('messages')">Сообщения</a>
+            <a class="btn-styled" onclick="page('settings')">Настройки</a>
+            <a class="btn-styled" onclick="page('support')">Поддержка</a>
+            <a class="btn-styled" onclick="page('updates')">Обновления</a>
+            <a class="btn-styled" onclick="page('logs')">Логи</a>
+       </div>
+       <div class="window">
+            <div class="accounts main" show="false">
+                <h3 class="logo">Аккаунты</h2>
+                <div class="account-form">
+                    <input type="text" placeholder="Токен аккаунта" class="input-styled" name="" id="account-token">
+                    <a class="second-btn-styled" id="addAcc">Добавить аккаунт</a>
+                </div>
+                <div class="account-list">
+                    <!-- <div class="account">
+                        <span class="acoount-name">NULL.exe#1111</span>
+                    </div> -->
+                </div>
+            </div>
+            <div class="messages main" show="true">
+                <h3 class="logo">Сообщения</h3>
+                <a class="second-btn-styled" style="width: 16vw; margin-top: 2vh;" onclick="page('edit')">Новый шаблон</a>
+                <div class="messages-list"></div>
+            </div>
+            <div class="edit main" show="false">
+                <h3 class="logo">Редактирование шаблона</h2>
+                <div class="form">
+                    <input type="text" placeholder="Название шаблона" class="input-styled" name="" id="msg-template">
+                    <input type="text" placeholder="ID Канала" class="input-styled" name="" id="msg-chid">
+                    <input  placeholder="Ограничение по времени" id="msg-time" class="input-styled" type="text">
+                    <input  placeholder="Ограничение по количеству сообщений" id="msg-q" class="input-styled" type="text">
+                    <select name="" id="msg-account" class="input-styled">
+                        
+                    </select>
+                    <textarea id="msg-message" placeholder="Сообщение" class="input-styled" cols="30" rows="10"></textarea>
+                   
+                    <a class="second-btn-styled" style="width: 19vw; text-align: center;" id="msg-create">Создать шаблон</a>
+                </div>
+               
+            </div>
+            <div class="settings main" show="false">
+                
+            </div>
+            <div class="support main" show="false"></div>
+            <div class="updates main" show="false"></div>
+            <div class="logs main" show="false"></div>
+       </div>
+    </div>
+    <script src="./scripts/requests.js"></script>
+    <script src="./scripts/app-local.js"></script>
+</body>
+
+</html>
