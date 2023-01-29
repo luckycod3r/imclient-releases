@@ -1,8 +1,19 @@
 @import url('https://fonts.cdnfonts.com/css/gotham');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 @font-face {
     font-family: 'Syncopate';
     src: url("./syncopate.otf")
+}
+
+@font-face{
+    font-family: 'Discord';
+    font-weight: bold;
+    src: url("../webfonts/DB.woff2");
+}
+@font-face{
+    font-family: 'Discord';
+    src: url("../webfonts/D.woff2");
 }
 body,html{
     height: 100%;
@@ -15,12 +26,27 @@ body,html{
     width: 100%;
     display: flex;
     background: linear-gradient(134.22deg, #27293E 2.12%, #090909 100.79%);
-    border-radius: 30px;
     -webkit-app-region: drag;
-    
+}
+.user{
+    display: flex;
+}
+.avatar{
+    border-radius: 50%;
+    height: 48px;
+}
+.user-name{
+    font-family: 'Discord';
+    text-transform: none;
+    margin-top: 5px;
+    margin-left: 10px;
 }
 [show="false"]{
     display: none;
+}
+.discord-preview{
+    margin-left: 2vw;
+    margin-top: 2vh;
 }
 .menu{
     width: 20vw;
@@ -28,6 +54,30 @@ body,html{
     flex-direction: column;
     row-gap: 2vh;
     padding: 2vh 0;
+}
+.discord-message{
+    font-family: 'Noto Sans';
+    font-weight: 300;
+    color: #fff;
+    padding: 2vh;
+    width: 85%;
+    margin-left: 3.8vw;
+    margin-top: -4.5vh;
+    
+}
+
+.discord-message code{
+    background-color: hsl(223, calc(1 * 6.9%), 19.8%);
+    border: 1px solid hsl(216, calc(1 * 7.2%), 13.5%);
+    color: hsl(210, calc(1 * 2.9%), 86.7%);
+}
+
+.discord-date{
+    font-family: 'Noto Sans';
+    font-size: 0.8em;
+    color: hsl(214, calc(1 * 4%), 65.3%);
+    margin-top: 5px;
+    margin-left: 0.8vw;
 }
 .logo{
     font-family: 'Syncopate';
@@ -95,8 +145,8 @@ button{
     background: rgba(72, 84, 95, 0.24);
     backdrop-filter: blur(24.5059px);
     border-radius: 30px;
-    font-family: 'Syncopate';
-    text-transform: uppercase;
+    font-family: 'Noto Sans';
+
     padding: 2vh 3vw;
     display: flex;
     transition: all 0.3s linear 0s;
@@ -104,6 +154,36 @@ button{
     outline: none;
     border: none;
     resize: none;
+}
+.hidden{
+    display: none !important;
+}
+.background-popup{
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    z-index: 2;
+    left: 0.6vw;
+    background: rgba(0, 0, 0, 0.31);
+    top: 0.9vh;
+    overflow: hidden;
+    display: flex;
+    -webkit-app-region: none;
+    justify-content: center;
+}
+
+.popup{
+    --width: 50vw;
+    position: absolute;
+    z-index: 3;
+    height: 55vh;
+    left: calc(50% - var(--width) / 2);
+    top: 20vh;
+    width: var(--width);
+    background-color: #37393d;
+    border-radius: 10px;
 }
 
 select, option{
@@ -115,11 +195,37 @@ select, option{
 }
 .input-styled::placeholder{
     color: rgba(255, 255, 255, 0.19);
+    font-family: 'Syncopate';
+    text-transform: uppercase;
 }
 option{
     background-color: #27293E ;
     outline: none;
     border: none;
+}
+.button-start-template, .edit-template, .delete-template{
+    background-color: transparent;
+    color: #fff;
+    border: none;
+}
+.user-name{
+    color: #fff;
+}
+.message i:hover{
+    color: rgb(223, 223, 223);
+    cursor: pointer;
+}
+.fa-pause{
+    color: red;
+}
+.d-spoiler{
+    background-color: #27293E;
+}
+.message-name{
+    flex: 1;
+}
+.timer{
+    flex: 1
 }
 .edit .form{
     display: flex;
@@ -143,7 +249,7 @@ option{
     align-items: center;
     padding: 0 1vw;
 }
-span{
+.account span, .message span{
     color: #fff;
     font-family: 'Syncopate';
     text-transform: uppercase;

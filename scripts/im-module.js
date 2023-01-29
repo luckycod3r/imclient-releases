@@ -66,10 +66,10 @@ let IM = class {
     }
 
     createTask(tmpl){
-        console.log(tmpl);
-        
+        let client = new Client(tmpl.account);
+        client.sendToChannel(tmpl.channelID,tmpl.message);
         let interval = setInterval(()=>{
-            let client = new Client(tmpl.account);
+            
             client.sendToChannel(tmpl.channelID,tmpl.message);
         },~~tmpl.timeCD * 1000)
             this.tasks.push({
@@ -77,9 +77,14 @@ let IM = class {
                 interval : interval,
                 stoped : false,
                 timer : this.createTimer(tmpl,tmpl.id)
-            })
-            
-            
+            }) 
+    }
+    deleteMessage(id){
+        let tmpl = this.findTemplate(id);
+        DATA.MESSAGES.splice(DATA.MESSAGES.indexOf(tmpl),1);
+        Memory.set(MemoryTypes.Messages,DATA.MESSAGES);
+        console.log('removed');
+        return true;
     }
 
     findTask(tmpl){
@@ -106,12 +111,18 @@ let IM = class {
             DATA.MESSAGES = [];
             nextID = 0;
         }
-        if(nextID != null) nextID = DATA.MESSAGES[DATA.MESSAGES.length - 1].id + 1;
+        //if(nextID != null) nextID = DATA.MESSAGES[DATA.MESSAGES.length - 1].id + 1;
         data.id = nextID;
         DATA.MESSAGES.push(data);
         Memory.set(MemoryTypes.Messages,DATA.MESSAGES)
         SET_PAGE("messages");
         return true
+    }
+
+    updateTemplate(templateData){
+        DATA.MESSAGES[state.edittable_template] = templateData;
+        Memory.set(MemoryTypes.Messages,DATA.MESSAGES);
+        return true;
     }
 
 }
