@@ -1,5 +1,6 @@
-// NzA2MDI1MTI1MDczMzg3NTUx.G9LPNO.hQufICpeXAphPSlAWueBKQ0DS88ILhplhoh51M
+const fs = require('fs');
 
+// NzA2MDI1MTI1MDczMzg3NTUx.G9LPNO.hQufICpeXAphPSlAWueBKQ0DS88ILhplhoh51M
 let task = (w)=>{
     setTimeout(w,1000);
 }
@@ -55,10 +56,31 @@ let Client = class {
     }
     sendToChannel(channelID, message){
         new FastApi(this.token).post(`/channels/${channelID}/messages`,{
-            "content" : `${message}`
+            "content" : `${message}`,
+            
         })   
     }
 }
+let attachmentsList = 0;
+let Discord = class {
+    constructor(){
 
+    }
 
-module.exports = {Client : Client, FastApi : FastApi};
+    Attachment = class {
+        constructor(path){
+            let id = attachmentsList++;
+            var stats = fs.statSync(path)
+            let object = {
+                id : id,
+                filename : "attached_by_imclient",
+                size : stats.size,
+                url : path,
+                
+
+            }
+        }
+    }
+}
+
+module.exports = {Client : Client, FastApi : FastApi, Discord : new Discord()};
