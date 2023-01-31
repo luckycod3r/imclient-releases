@@ -4,10 +4,10 @@ global.SET_PAGE = (name) => {
     document.querySelector(`.${name}`).setAttribute("show",true);
   }
   
-const { ipcRenderer, net, shell } = require('electron');
+const { ipcRenderer, net, shell, dialog } = require('electron');
 const {machineId, machineIdSync} = require('node-machine-id');
 const Store = require('electron-store');
-const { Client } = require('./discord-module');
+const { Client, Discord } = require('./discord-module');
 const { Memory, MemoryTypes } = require('./storage-module');
 const { parser, htmlOutput, toHTML } = require('discord-markdown-fix');
 const hljs = require('highlight.js/lib/common');
@@ -16,8 +16,10 @@ global.DATA = {
     ACCOUNTS : [],
     MESSAGES : []
 }
+global.DIALOGAPI = dialog;
 
 const { IMClient } = require('./im-module');
+const fs = require('fs');
 
 function clk(selector,callback){
     document.querySelector(selector).onclick = callback;
@@ -112,9 +114,7 @@ function hidePreview(){
     document.querySelector(".popup").classList.add("hidden");
 }
 window.addEventListener('DOMContentLoaded', () => {
-    
     clk(".background-popup",hidePreview);
-
      Memory.get(MemoryTypes.Accounts,(res)=>{
         DATA.ACCOUNTS = res;
         loadData();
@@ -126,6 +126,17 @@ window.addEventListener('DOMContentLoaded', () => {
      clk("#msg-preview",()=>{
         let fst = new fstQ('#msg');
         showPreview(fst.v('message'));
+     })
+     clk("#msg-file",()=>{
+        IMClient.createDialogue('upload',(dialog)=>{
+            if(dialog.canceled == false){
+                let attachments = [];
+                for(let path of dialog.filePaths){
+                    attachments.push(new Discord.Attachment(path));
+                }
+                console.log(attachments);
+            }
+        })
      })
     clk("#msg-create",()=>{
         let fst = new fstQ('#msg');

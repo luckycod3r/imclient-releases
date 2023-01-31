@@ -21,6 +21,7 @@
     "discord-markdown-fix": "^2.5.4",
     "electron-packager": "^15.5.1",
     "electron-store": "^8.1.0",
+    "fs": "^0.0.1-security",
     "jquery": "^3.6.0",
     "node-fetch": "^3.3.0",
     "node-machine-id": "^1.1.12",

@@ -1,5 +1,6 @@
 const { Memory, MemoryTypes } = require('./storage-module');
 const { Client, FastApi } = require('./discord-module');
+const { dialog, ipcRenderer } = require('electron');
 
 let IM = class {
     constructor(params) {
@@ -123,6 +124,13 @@ let IM = class {
         DATA.MESSAGES[state.edittable_template] = templateData;
         Memory.set(MemoryTypes.Messages,DATA.MESSAGES);
         return true;
+    }
+
+    createDialogue(type, handler){
+        if(type === 'upload'){
+            ipcRenderer.invoke('dialog').then(handler);
+
+        }
     }
 
 }

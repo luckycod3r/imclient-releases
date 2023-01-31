@@ -1,12 +1,12 @@
 const { info } = require('console');
-const { app, BrowserWindow, ipcMain, net, shell, Menu, MenuItem } = require('electron')
+const { app, BrowserWindow, ipcMain, net, shell, Menu, MenuItem, dialog } = require('electron')
 const Store = require('electron-store');
 const path = require('path')
-let mainWindow;
+global.mainWindow;
 const STORAGE = new Store();
 function createWindow() {
 
-    mainWindow = new BrowserWindow({
+    global.mainWindow = new BrowserWindow({
         width: 1200,
         height: 750,
         productName: "FallLinks",
@@ -72,4 +72,7 @@ ipcMain.handle('saveInStorage',(event,...args)=>{
 ipcMain.handle('getFromStorage',(event,...args)=>{
     return STORAGE.get(args[0]);
 
+})
+ipcMain.handle('dialog',(event,...args)=>{
+    return dialog.showOpenDialog(mainWindow,{});
 })

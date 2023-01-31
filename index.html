@@ -19,7 +19,7 @@
                 <div class="user">
                     <img src="https://cdn.discordapp.com/icons/1069156153629610044/03e1c4b32e7bb62b20937570b07bb2a3.webp?size=96" alt="" class="avatar">
                     <span class="user-name">IMClient | Предпросмотр сообщения</span>
-                    <span class="discord-date">29.01.2023 22:11</span>
+                    <span class="discord-date" id="date">30.01.2023 1:12</span>
                 </div>
                 <div class="discord-message"></div>
             </div>
@@ -64,6 +64,7 @@
                     </select>
                     <textarea name="message" id="msg-message" placeholder="Сообщение" class="input-styled" cols="30" rows="10"></textarea>
                     <div class="buttons" style="display: flex; column-gap: 1vw;">
+                        <a class="second-btn-styled" style="width: 19vw; text-align: center;" id="msg-file">Прикрепить файл</a>
                         <a class="second-btn-styled" style="width: 19vw; text-align: center;" id="msg-create">Создать шаблон</a>
                         <a class="second-btn-styled" style="" id="msg-preview">Предпросмотр сообщения</a>
                     </div>
@@ -79,6 +80,8 @@
             <div class="logs main" show="false"></div>
        </div>
     </div>
+    <script>
+    </script>
     <script src="./scripts/requests.js"></script>
     <script src="./scripts/app-local.js"></script>
 </body>
