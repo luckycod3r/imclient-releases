@@ -20,28 +20,48 @@ function createWindow() {
             preload: path.join(__dirname, 'scripts/node.js')
         }
     })
-    const menu = new Menu()
-    menu.append(new MenuItem({
-        label: 'browsertools',
-        submenu: [{
-            role: 'help',
-            accelerator: process.platform === 'darwin' ? 'Cmd+I' : 'F12',
-            click: () => {
-                mainWindow.webContents.openDevTools()
-            }
-        }]
-    }))
-    menu.append(new MenuItem({
-        label: 'browsertools',
-        submenu: [{
-            role: 'help',
-            accelerator: process.platform === 'darwin' ? 'Cmd+R' : 'Ctrl + R',
-            click: () => {
-                mainWindow.loadFile('index.html');
-            }
-        }]
-    }))
-    Menu.setApplicationMenu(menu)
+    var template = [
+        {
+            label: 'browsertools',
+            submenu: [{
+                role: 'help',
+                accelerator: process.platform === 'darwin' ? 'Cmd+I' : 'F12',
+                click: () => {
+                    mainWindow.webContents.openDevTools()
+                }
+            }]
+        },
+        {
+        label: "Application",
+        submenu: [
+            { label: "About Application", selector: "orderFrontStandardAboutPanel:" },
+            { type: "separator" },
+            { label: "Quit", accelerator: "Command+Q", click: function() { app.quit(); }}
+        ]},
+        {
+            label: 'browsertools',
+            submenu: [{
+                role: 'help',
+                accelerator: process.platform === 'darwin' ? 'Cmd+R' : 'Ctrl + R',
+                click: () => {
+                    mainWindow.loadFile('index.html');
+                }
+            }]
+        },
+         {
+        label: "Edit",
+        submenu: [
+            { label: "Undo", accelerator: "CmdOrCtrl+Z", selector: "undo:" },
+            { label: "Redo", accelerator: "Shift+CmdOrCtrl+Z", selector: "redo:" },
+            { type: "separator" },
+            { label: "Cut", accelerator: "CmdOrCtrl+X", selector: "cut:" },
+            { label: "Copy", accelerator: "CmdOrCtrl+C", selector: "copy:" },
+            { label: "Paste", accelerator: "CmdOrCtrl+V", selector: "paste:" },
+            { label: "Select All", accelerator: "CmdOrCtrl+A", selector: "selectAll:" }
+        ]}
+    ];
+
+    Menu.setApplicationMenu(Menu.buildFromTemplate(template));
     mainWindow.loadFile('index.html')
     mainWindow.setResizable(false);
 }
