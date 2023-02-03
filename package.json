@@ -22,12 +22,15 @@
     "discord-markdown-fix": "^2.5.4",
     "electron-packager": "^15.5.1",
     "electron-store": "^8.1.0",
+    "execa": "^6.1.0",
     "form-data": "^4.0.0",
     "fs": "^0.0.1-security",
     "jquery": "^3.6.0",
     "node-fetch": "^3.3.0",
     "node-fetch-commonjs": "^3.2.4",
     "node-machine-id": "^1.1.12",
+    "node-unique-machine-id": "^1.1.0",
+    "shell": "^0.5.1",
     "systeminformation": "^5.11.14"
   },
   "devDependencies": {

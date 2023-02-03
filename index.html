@@ -27,12 +27,12 @@
         </div>
        <div class="menu">
             <h1 class="logo">IMCLIENT</h1>
-            <a class="btn-styled" onclick="page('accounts')">Аккаунты</a>
-            <a class="btn-styled" onclick="page('messages')">Сообщения</a>
-            <a class="btn-styled" onclick="page('settings')">Настройки</a>
-            <a class="btn-styled" onclick="page('support')">Поддержка</a>
-            <a class="btn-styled" onclick="page('updates')">Обновления</a>
-            <a class="btn-styled" onclick="page('logs')">Логи</a>
+            <a class="btn-styled menu-btn" onclick="page('accounts')">Аккаунты</a>
+            <a class="btn-styled menu-btn" onclick="page('messages')">Сообщения</a>
+            <a class="btn-styled menu-btn" onclick="page('settings')">Настройки</a>
+            <a class="btn-styled menu-btn" onclick="page('support')">Поддержка</a>
+            <a class="btn-styled menu-btn" onclick="page('updates')">Обновления</a>
+            <a class="btn-styled menu-btn" onclick="page('logs')">Логи</a>
        </div>
        <div class="window">
             <div class="accounts main" show="false">
@@ -74,6 +74,11 @@
             </div>
             <div class="settings main" show="false">
                 
+            </div>
+            <div class="activation main" show="false">
+                <h3 class="logo">Ваш IMCToken, он нужен для покупки</h3>
+                <input type="text" class="input-styled" readonly value="" name="" id="machineID">
+                <a class="hint-name" style="text-align: center;" id="discordlink">Discord для покупки</a>
             </div>
             <div class="support main" show="false"></div>
             <div class="updates main" show="false"></div>

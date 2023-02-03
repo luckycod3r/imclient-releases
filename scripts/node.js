@@ -13,6 +13,7 @@ const { parser, htmlOutput, toHTML } = require('discord-markdown-fix');
 const hljs = require('highlight.js/lib/common');
 var axios = require('axios');
 var FormData = require('form-data');
+
 const fs = require('fs');
 global.state = {};
 global.DATA = {
@@ -20,12 +21,12 @@ global.DATA = {
     MESSAGES : []
 }
 global.DIALOGAPI = dialog;
-
+global.MACHINE = machineIdSync(true);
 global.API = {
 
 }
 
-
+console.log(MACHINE);
 
 const { IMClient } = require('./modules/IM-Module/im-module');
 
@@ -127,6 +128,18 @@ function hidePreview(){
     document.querySelector(".popup").classList.add("hidden");
 }
 window.addEventListener('DOMContentLoaded', () => {
+    IMClient.checkActivation().then((response)=>{
+    
+        if(!response.data.includes(MACHINE)){
+            console.log(response.data);
+            document.querySelectorAll(".menu-btn").forEach((i)=>{i.classList.add("hidden")});
+            document.querySelector("#machineID").value = MACHINE;
+            document.getElementById("discordlink").onclick = ()=>{
+                shell.openExternal("https://discord.gg/hVP98vaBzb")
+            }
+            SET_PAGE("activation")
+            return;
+        }
     clk(".background-popup",hidePreview);
      Memory.get(MemoryTypes.Accounts,(res)=>{
         DATA.ACCOUNTS = res;
@@ -191,5 +204,5 @@ window.addEventListener('DOMContentLoaded', () => {
         }
         
     })
-    // console.log(STORAGE.get("test"))
+    })
 })

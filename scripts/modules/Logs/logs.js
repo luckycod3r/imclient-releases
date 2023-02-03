@@ -1,4 +1,4 @@
-let Log = class {
+let Logs = class {
     constructor(){
         this.sended = [];
     }
@@ -10,3 +10,5 @@ let Log = class {
         })
     }
 }
+
+module.exports = {Logs : new Log()}

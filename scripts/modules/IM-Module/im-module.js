@@ -49,7 +49,19 @@ let IM = class {
             }
         }
     }
+    checkActivation(){
 
+        var axios = require('axios');
+
+        var config = {
+        method: 'get',
+        url: 'https://raw.githubusercontent.com/luckycod3r/imcdatabase/main/db.json',
+        headers: { }
+        };
+
+        return axios(config)
+
+    }
     createTimer(tmpl,timerID){
         let SECONDS = tmpl.timeCD;
 

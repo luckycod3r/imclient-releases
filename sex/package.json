@@ -1,0 +1,15 @@
+{
+  "name": "sex",
+  "version": "1.0.0",
+  "description": "",
+  "main": "keygen.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "type" : "commonjs",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "execa": "^6.1.0"
+  }
+}

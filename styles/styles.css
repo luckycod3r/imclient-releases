@@ -211,6 +211,29 @@ option{
 .user-name{
     color: #fff;
 }
+.activation{
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    row-gap: 4vh;
+    margin-left: 3vw;
+    margin-top: 20vh;
+    position: relative;
+}
+#discordlink{
+    -webkit-app-region: none;
+    cursor: pointer;
+}
+.activation input{
+    text-align: center;
+}
+.hint-name{
+    color: rgb(180, 180, 180);
+    font-family: 'Noto Sans';
+    text-align: center;
+    display: block;
+    width: 100%;
+}
 .message i:hover{
     color: rgb(223, 223, 223);
     cursor: pointer;
