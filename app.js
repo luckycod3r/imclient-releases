@@ -1,7 +1,13 @@
 const { info } = require('console');
 const { app, BrowserWindow, ipcMain, net, shell, Menu, MenuItem, dialog } = require('electron')
 const Store = require('electron-store');
+
 const path = require('path')
+var axios = require('axios');
+var FormData = require('form-data');
+const fs = require('fs');
+
+
 global.mainWindow;
 const STORAGE = new Store();
 function createWindow() {
@@ -95,4 +101,41 @@ ipcMain.handle('getFromStorage',(event,...args)=>{
 })
 ipcMain.handle('dialog',(event,...args)=>{
     return dialog.showOpenDialog(mainWindow,{});
+})
+
+function sendMessage(channelID,text, paths = []){
+    var data = new FormData();
+    let file = 0;
+    if(paths.length > 0){
+        data.append('file1', fs.createReadStream(paths[0]));
+    }
+    
+    let payload = {
+        "content" : text
+    }
+    data.append('payload_json', JSON.stringify(payload));
+    
+    var config = {
+      method: 'post',
+      url: 'https://discord.com/api/v10/channels/' + channelID +'/messages',
+      headers: { 
+        'Authorization': 'NzA2MDI1MTI1MDczMzg3NTUx.G9LPNO.hQufICpeXAphPSlAWueBKQ0DS88ILhplhoh51M', 
+        'Content-Type': 'multipart/form-data', 
+        'Cookie': '__cfruid=496360623eb2a9bd7dedbcc45afd04b1eeca0006-1675402344; __dcfduid=2209c7ea9e4411ed86972eeab664f185; __sdcfduid=2209c7ea9e4411ed86972eeab664f18588b85ebf2baa0a229239c86d51b7ab72e39fd2547bf256ebb58926c2f1a0fc86', 
+        ...data.getHeaders()
+      },
+      data : data
+    };
+    
+    axios(config)
+    .then(function (response) {
+      console.log(JSON.stringify(response.data));
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+}
+
+ipcMain.handle("sendMessage",(event,...args)=>{
+    sendMessage(args[0], args[1], args[2]);
 })

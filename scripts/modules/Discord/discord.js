@@ -1,4 +1,7 @@
-const fs = require('fs');
+var axios = require('axios');
+const { ipcRenderer } = require('electron');
+var FormData = require('form-data');
+var fs = require('fs');
 
 // NzA2MDI1MTI1MDczMzg3NTUx.G9LPNO.hQufICpeXAphPSlAWueBKQ0DS88ILhplhoh51M
 let task = (w)=>{
@@ -10,23 +13,26 @@ let FastApi = class {
         this.token = token;
     }
 
-    async post(lib,params,callback, isDataInBody = false){
+    async post(lib,params, isDataInBody = false){
         let form = new FormData();
+        let data_ = params;
         
-        for(let i in params){
-            form.append(i,params[i]);
+        if(!isDataInBody){
+            data_ = JSON.stringify(params);
         }
-
+        console.log(data_);
+      
         const response = await fetch(`https://discord.com/api/v10${lib}`,{
-            body : JSON.stringify(params),
+            body : JSON.stringify(data_),
             method : "post",
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'multipart/form-data',
                 'Authorization': this.token
               }
             
         })
         const data = await response.json();
+        console.log(response);
         console.log(data);
         return data;
     }
@@ -54,17 +60,15 @@ let Client = class {
     constructor(token){
         this.token = token;
     }
-    sendToChannel(channelID, message){
-        new FastApi(this.token).post(`/channels/${channelID}/messages`,{
-            "content" : `${message}`,
-            
-        })   
+    sendToChannel(template){
+        console.log(template);
+        ipcRenderer.invoke("sendMessage",template.channelID,template.message, template.images);
     }
 }
 let attachmentsList = 0;
 let Discord = class {
     constructor(){
-
+        
     }
 
     Attachment = class {
@@ -76,9 +80,8 @@ let Discord = class {
                 filename : "attached_by_imclient",
                 size : stats.size,
                 url : path,
-                
-
             }
+            return object;
         }
     }
 }

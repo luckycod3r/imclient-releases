@@ -7,10 +7,13 @@ global.SET_PAGE = (name) => {
 const { ipcRenderer, net, shell, dialog } = require('electron');
 const {machineId, machineIdSync} = require('node-machine-id');
 const Store = require('electron-store');
-const { Client, Discord } = require('./discord-module');
-const { Memory, MemoryTypes } = require('./storage-module');
+const { Client, Discord } = require('./modules/Discord/discord');
+const { Memory, MemoryTypes } = require('./modules/Storage/storage-module');
 const { parser, htmlOutput, toHTML } = require('discord-markdown-fix');
 const hljs = require('highlight.js/lib/common');
+var axios = require('axios');
+var FormData = require('form-data');
+const fs = require('fs');
 global.state = {};
 global.DATA = {
     ACCOUNTS : [],
@@ -18,8 +21,17 @@ global.DATA = {
 }
 global.DIALOGAPI = dialog;
 
-const { IMClient } = require('./im-module');
-const fs = require('fs');
+global.API = {
+
+}
+
+
+
+const { IMClient } = require('./modules/IM-Module/im-module');
+
+
+
+
 
 function clk(selector,callback){
     document.querySelector(selector).onclick = callback;
@@ -91,6 +103,7 @@ function loadMessages(){
             let form = document.querySelector("#edit");
             let TEMPLATE_OBJECT = IMClient.findTemplate(id);
             state.edittable_template = id;
+            
             form["name"].value = TEMPLATE_OBJECT.name;
             form["msgs"].value = TEMPLATE_OBJECT.msgCD;
             form["time"].value = TEMPLATE_OBJECT.timeCD;
@@ -128,15 +141,18 @@ window.addEventListener('DOMContentLoaded', () => {
         showPreview(fst.v('message'));
      })
      clk("#msg-file",()=>{
-        IMClient.createDialogue('upload',(dialog)=>{
-            if(dialog.canceled == false){
-                let attachments = [];
-                for(let path of dialog.filePaths){
-                    attachments.push(new Discord.Attachment(path));
+        if(state.edittable_template > -1){
+            IMClient.createDialogue('upload',(dialog)=>{
+                if(dialog.canceled == false){
+                    let attachments = [];
+                    let path = dialog.filePaths[0];
+                    let object = IMClient.findTemplate(state.edittable_template);
+                    object.images = [path];
+                    IMClient.updateTemplate(object)
                 }
-                console.log(attachments);
-            }
-        })
+            })
+        }
+        
      })
     clk("#msg-create",()=>{
         let fst = new fstQ('#msg');
@@ -146,7 +162,8 @@ window.addEventListener('DOMContentLoaded', () => {
             timeCD : fst.v('time'),
             msgCD : fst.v('q'),
             account : IMClient.findAccount(fst.v('account')).token,
-            message : fst.v('message')
+            message : fst.v('message'),
+            images : DATA.MESSAGES[state.edittable_template].images
         }
         if(document.getElementById("msg-create").getAttribute("action") == 'new'){
             if(IMClient.addTemplate(data)){

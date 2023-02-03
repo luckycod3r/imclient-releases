@@ -1,5 +1,5 @@
-const { Memory, MemoryTypes } = require('./storage-module');
-const { Client, FastApi } = require('./discord-module');
+const { Memory, MemoryTypes } = require('../Storage/storage-module');
+const { Client, FastApi } = require('../Discord/discord');
 const { dialog, ipcRenderer } = require('electron');
 
 let IM = class {
@@ -68,10 +68,10 @@ let IM = class {
 
     createTask(tmpl){
         let client = new Client(tmpl.account);
-        client.sendToChannel(tmpl.channelID,tmpl.message);
+        client.sendToChannel(tmpl);
         let interval = setInterval(()=>{
             
-            client.sendToChannel(tmpl.channelID,tmpl.message);
+            client.sendToChannel(tmpl);
         },~~tmpl.timeCD * 1000)
             this.tasks.push({
                 template : tmpl,
@@ -121,6 +121,7 @@ let IM = class {
     }
 
     updateTemplate(templateData){
+        console.log(templateData);
         DATA.MESSAGES[state.edittable_template] = templateData;
         Memory.set(MemoryTypes.Messages,DATA.MESSAGES);
         return true;
