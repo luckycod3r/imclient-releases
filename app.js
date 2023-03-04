@@ -15,7 +15,11 @@ const { autoUpdater, AppUpdater } = require("electron-updater");
 
 autoUpdater.autoDownload = false;
 autoUpdater.autoInstallOnAppQuit = true;
-
+autoUpdater.setFeedURL({
+    provider: "github",
+    owner: "luckycod3r",
+    repo: "imclient-releases",
+  });
 
 global.mainWindow;
 const STORAGE = new Store();
@@ -72,34 +76,42 @@ function createWindow() {
 }
 app.whenReady().then(() => {
 
-    createWindow()
+    createWindow();
+
     autoUpdater.checkForUpdates();
 
     app.on('activate', function() {
 
-
+        alert("test");
         if (BrowserWindow.getAllWindows().length === 0) createWindow()
        
     })
 })
 
 autoUpdater.on("update-available", (info) => {
-    alert(`Update available. Current version ${app.getVersion()}`);
-    let pth = autoUpdater.downloadUpdate();
-    alert(pth);
+    dialog.showMessageBox(mainWindow,{
+        "message" : `Update available. Current version ${app.getVersion()}`
+    });
+    autoUpdater.downloadUpdate();
   });
   
   autoUpdater.on("update-not-available", (info) => {
-    alert(`No update available. Current version ${app.getVersion()}`);
+    dialog.showMessageBox(mainWindow,{
+        "message" : `No update available. Current version ${app.getVersion()}`
+    });
   });
   
   /*Download Completion Message*/
   autoUpdater.on("update-downloaded", (info) => {
-    alert(`Update downloaded. Current version ${app.getVersion()}`);
+    dialog.showMessageBox(mainWindow,{
+        "message" : `Update downloaded. Current version ${app.getVersion()}`
+    });
   });
   
   autoUpdater.on("error", (info) => {
-    alert(info);
+    dialog.showMessageBox(mainWindow,{
+        "message" : `${info}`
+    });
   });
 
 app.on('window-all-closed', function() {
