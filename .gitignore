@@ -1,1 +1,4 @@
 node_modules/
+*.bat
+dist/
+electron-builder.yml

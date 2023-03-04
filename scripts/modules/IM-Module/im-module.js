@@ -5,6 +5,7 @@ const { dialog, ipcRenderer } = require('electron');
 let IM = class {
     constructor(params) {
         this.tasks = []
+        this.version = "1.0";
     }
 
     addAccount(token){
@@ -61,6 +62,23 @@ let IM = class {
 
         return axios(config)
 
+    }
+    checkUpdate(){
+        // var axios = require('axios');
+
+        // var config = {
+        // method: 'get',
+        // url: 'https://raw.githubusercontent.com/luckycod3r/imcdatabase/main/version.json',
+        // headers: { }
+        // };
+
+        // axios(config).then((response)=>{
+        //     let version = response.data[0];
+        //     if(version != this.version){
+        //         alert("Доступно обновление!");
+        //         ipcRenderer.invoke("quit-app");
+        //     }
+        // })
     }
     createTimer(tmpl,timerID){
         let SECONDS = tmpl.timeCD;
@@ -131,7 +149,7 @@ let IM = class {
         SET_PAGE("messages");
         return true
     }
-
+   
     updateTemplate(templateData){
         console.log(templateData);
         DATA.MESSAGES[state.edittable_template] = templateData;

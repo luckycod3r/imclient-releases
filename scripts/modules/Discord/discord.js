@@ -62,7 +62,7 @@ let Client = class {
     }
     sendToChannel(template){
         console.log(template);
-        ipcRenderer.invoke("sendMessage",template.channelID,template.message, template.images);
+        ipcRenderer.invoke("sendMessage",template.channelID,template.message,this.token, template.images);
     }
 }
 let attachmentsList = 0;

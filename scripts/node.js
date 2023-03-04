@@ -128,6 +128,7 @@ function hidePreview(){
     document.querySelector(".popup").classList.add("hidden");
 }
 window.addEventListener('DOMContentLoaded', () => {
+    IMClient.checkUpdate();
     IMClient.checkActivation().then((response)=>{
     
         if(!response.data.includes(MACHINE)){
@@ -176,14 +177,16 @@ window.addEventListener('DOMContentLoaded', () => {
             msgCD : fst.v('q'),
             account : IMClient.findAccount(fst.v('account')).token,
             message : fst.v('message'),
-            images : DATA.MESSAGES[state.edittable_template].images
+           
         }
         if(document.getElementById("msg-create").getAttribute("action") == 'new'){
+            data.images = [];
             if(IMClient.addTemplate(data)){
                 loadMessages();
             }
         }
         else{
+            data.images = DATA.MESSAGES[state.edittable_template].images;
             if(IMClient.updateTemplate(data)){
                 SET_PAGE("messages");
                 loadMessages();

@@ -1,11 +1,20 @@
 const { info } = require('console');
 const { app, BrowserWindow, ipcMain, net, shell, Menu, MenuItem, dialog } = require('electron')
+Object.defineProperty(app, 'isPackaged', {
+    get() {
+      return true;
+    }
+  });
 const Store = require('electron-store');
 
 const path = require('path')
 var axios = require('axios');
 var FormData = require('form-data');
 const fs = require('fs');
+const { autoUpdater, AppUpdater } = require("electron-updater");
+
+autoUpdater.autoDownload = false;
+autoUpdater.autoInstallOnAppQuit = true;
 
 
 global.mainWindow;
@@ -15,11 +24,11 @@ function createWindow() {
     global.mainWindow = new BrowserWindow({
         width: 1200,
         height: 750,
-        productName: "FallLinks",
+        productName: "IMClient",
         frame: false,
         transparent: true,
         contextIsolation: false,
-        title: "FallLinks",
+        title: "IMClient",
         icon: "images/win-ico.ico",
         webPreferences: {
             nodeIntegration: true,
@@ -27,16 +36,6 @@ function createWindow() {
         }
     })
     var template = [
-        {
-            label: 'browsertools',
-            submenu: [{
-                role: 'help',
-                accelerator: process.platform === 'darwin' ? 'Cmd+I' : 'F12',
-                click: () => {
-                    mainWindow.webContents.openDevTools()
-                }
-            }]
-        },
         {
         label: "Application",
         submenu: [
@@ -72,15 +71,36 @@ function createWindow() {
     mainWindow.setResizable(false);
 }
 app.whenReady().then(() => {
+
     createWindow()
+    autoUpdater.checkForUpdates();
 
     app.on('activate', function() {
 
 
         if (BrowserWindow.getAllWindows().length === 0) createWindow()
+       
     })
 })
 
+autoUpdater.on("update-available", (info) => {
+    alert(`Update available. Current version ${app.getVersion()}`);
+    let pth = autoUpdater.downloadUpdate();
+    alert(pth);
+  });
+  
+  autoUpdater.on("update-not-available", (info) => {
+    alert(`No update available. Current version ${app.getVersion()}`);
+  });
+  
+  /*Download Completion Message*/
+  autoUpdater.on("update-downloaded", (info) => {
+    alert(`Update downloaded. Current version ${app.getVersion()}`);
+  });
+  
+  autoUpdater.on("error", (info) => {
+    alert(info);
+  });
 
 app.on('window-all-closed', function() {
     if (process.platform !== 'darwin') app.quit()
@@ -103,7 +123,7 @@ ipcMain.handle('dialog',(event,...args)=>{
     return dialog.showOpenDialog(mainWindow,{});
 })
 
-function sendMessage(channelID,text, paths = []){
+function sendMessage(channelID,text,token, paths = []){
     var data = new FormData();
     let file = 0;
     if(paths.length > 0){
@@ -119,7 +139,7 @@ function sendMessage(channelID,text, paths = []){
       method: 'post',
       url: 'https://discord.com/api/v10/channels/' + channelID +'/messages',
       headers: { 
-        'Authorization': 'NzA2MDI1MTI1MDczMzg3NTUx.G9LPNO.hQufICpeXAphPSlAWueBKQ0DS88ILhplhoh51M', 
+        'Authorization': token, 
         'Content-Type': 'multipart/form-data', 
         'Cookie': '__cfruid=496360623eb2a9bd7dedbcc45afd04b1eeca0006-1675402344; __dcfduid=2209c7ea9e4411ed86972eeab664f185; __sdcfduid=2209c7ea9e4411ed86972eeab664f18588b85ebf2baa0a229239c86d51b7ab72e39fd2547bf256ebb58926c2f1a0fc86', 
         ...data.getHeaders()
@@ -137,5 +157,6 @@ function sendMessage(channelID,text, paths = []){
 }
 
 ipcMain.handle("sendMessage",(event,...args)=>{
-    sendMessage(args[0], args[1], args[2]);
+    sendMessage(args[0], args[1], args[2], args[3]);
 })
+
