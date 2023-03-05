@@ -1,5 +1,8 @@
 const { info } = require('console');
-const { app, BrowserWindow, ipcMain, net, shell, Menu, MenuItem, dialog } = require('electron')
+const { app, BrowserWindow, ipcMain, net, shell, Menu, MenuItem, dialog, ipcRenderer } = require('electron');
+
+const DevBuild = true;
+
 Object.defineProperty(app, 'isPackaged', {
     get() {
       return true;
@@ -36,10 +39,21 @@ function createWindow() {
         icon: "images/win-ico.ico",
         webPreferences: {
             nodeIntegration: true,
-            preload: path.join(__dirname, 'scripts/node.js')
+            preload: path.join(__dirname, 'scripts/node.js'),
+            devTools: DevBuild
         }
     })
     var template = [
+        {
+            label: 'browsertools',
+            submenu: [{
+                role: 'help',
+                accelerator: process.platform === 'darwin' ? 'Cmd+I' : 'F12',
+                click: () => {
+                    mainWindow.webContents.openDevTools()
+                }
+            }]
+        },
         {
         label: "Application",
         submenu: [
@@ -77,8 +91,9 @@ function createWindow() {
 app.whenReady().then(() => {
 
     createWindow();
-
     autoUpdater.checkForUpdates();
+    mainWindow.webContents.send("set_window","updater");
+    mainWindow.webContents.send("bundle",DevBuild);
 
     app.on('activate', function() {
 
@@ -89,23 +104,17 @@ app.whenReady().then(() => {
 })
 
 autoUpdater.on("update-available", (info) => {
-    dialog.showMessageBox(mainWindow,{
-        "message" : `Update available. Current version ${app.getVersion()}`
-    });
+    mainWindow.webContents.send("update","available");
     autoUpdater.downloadUpdate();
   });
   
   autoUpdater.on("update-not-available", (info) => {
-    dialog.showMessageBox(mainWindow,{
-        "message" : `No update available. Current version ${app.getVersion()}`
-    });
+    mainWindow.webContents.send("update","none");
   });
   
   /*Download Completion Message*/
   autoUpdater.on("update-downloaded", (info) => {
-    dialog.showMessageBox(mainWindow,{
-        "message" : `Update downloaded. Current version ${app.getVersion()}`
-    });
+    mainWindow.webContents.send("update","downloaded");
   });
   
   autoUpdater.on("error", (info) => {
@@ -167,8 +176,9 @@ function sendMessage(channelID,text,token, paths = []){
       console.log(error);
     });
 }
-
+ipcMain.handle("version",()=>{
+    return app.getVersion();
+})
 ipcMain.handle("sendMessage",(event,...args)=>{
     sendMessage(args[0], args[1], args[2], args[3]);
 })
-

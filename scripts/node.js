@@ -4,7 +4,7 @@ global.SET_PAGE = (name) => {
     document.querySelector(`.${name}`).setAttribute("show",true);
   }
   
-const { ipcRenderer, net, shell, dialog } = require('electron');
+const { ipcRenderer, net, shell, dialog, app } = require('electron');
 const {machineId, machineIdSync} = require('node-machine-id');
 const Store = require('electron-store');
 const { Client, Discord } = require('./modules/Discord/discord');
@@ -13,7 +13,7 @@ const { parser, htmlOutput, toHTML } = require('discord-markdown-fix');
 const hljs = require('highlight.js/lib/common');
 var axios = require('axios');
 var FormData = require('form-data');
-
+let DevBuild;
 const fs = require('fs');
 global.state = {};
 global.DATA = {
@@ -26,13 +26,15 @@ global.API = {
 
 }
 
-console.log(MACHINE);
-
 const { IMClient } = require('./modules/IM-Module/im-module');
 
+ipcRenderer.on("bundle",(ev,d)=>{
+    DevBuild = d;
+})
 
-
-
+ipcRenderer.on("set_window",(ev,d)=>{
+    document.querySelector(`.${d}-window`).style.display = "flex";
+})
 
 function clk(selector,callback){
     document.querySelector(selector).onclick = callback;
@@ -55,6 +57,9 @@ let fstQ = class {
 
 function loadData(){
     let wrapper = document.querySelector(".account-list");
+    if(DATA.ACCOUNTS == undefined){
+        DATA.ACCOUNTS = [];
+    }
     for(let data of DATA.ACCOUNTS){
         let container = document.createElement("div");
         container.classList.add("account");
@@ -127,8 +132,40 @@ function hidePreview(){
     document.querySelector(".background-popup").classList.add("hidden");
     document.querySelector(".popup").classList.add("hidden");
 }
+
+ipcRenderer.on("update",(ev, data)=>{
+    if(data == "none"){
+        document.querySelector(".updater-window span").innerHTML = "Обновления не найдены";
+        setTimeout(()=>{
+            document.querySelector(".updater-window").style.display = "none";
+        },1000)
+    }
+    else if(data == "available"){
+        document.querySelector(".updater-window span").innerHTML = "Доступна новая версия. Идёт установка";
+    }
+    else if(data == "downloaded"){
+        alert("Новая версия установлена!")
+    }
+})
+
 window.addEventListener('DOMContentLoaded', () => {
-    IMClient.checkUpdate();
+    addClickAction = (s,f)=>{
+        document.querySelector(s).addEventListener("click",f);
+    }
+    addClickAction(".minimize",()=>{
+        ipcRenderer.invoke("hide-app");
+    })
+    addClickAction(".exit",()=>{
+        ipcRenderer.invoke("quit-app");
+    })
+
+    ipcRenderer.invoke("version").then((res)=>{
+        let bundle = (DevBuild) ? "dev" : "release";
+        document.querySelector(".app-version").innerHTML = `${bundle}-build-${res}`;
+    })
+
+
+
     IMClient.checkActivation().then((response)=>{
     
         if(!response.data.includes(MACHINE)){

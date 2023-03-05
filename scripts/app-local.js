@@ -1,6 +1,23 @@
-let SELECTED_PAGE = 'messages';
+let SELECTED_PAGE = 'updates';
 
+let updates = [
+  {
+    v : "release-build-1.0.0",
+    i : "Пофикшены баги. Добавлена эта вкладка. Авто-обновления."
+  }
+]
 
+document.addEventListener("DOMContentLoaded",()=>{
+  for(let i in updates){
+    let cont = document.createElement("div");
+    cont.classList.add("update");
+    cont.innerHTML = `
+        <span class="update-version">${updates[i].v}</span>
+        <p>${updates[i].i}</p>
+    `
+    document.querySelector(".updates-wrapper").append(cont)
+    }
+})
 
 function page(name){
   SELECTED_PAGE = name;

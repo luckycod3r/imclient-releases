@@ -15,10 +15,66 @@
     font-family: 'Discord';
     src: url("../webfonts/D.woff2");
 }
+.header-buttons{
+    font-family: 'Discord';
+    color: #ccc;
+    display: flex;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 2;
+    
+}
+.updates-wrapper{
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+.update{
+    width: 80%;
+    min-height: 30vh;
+    background-color: #11111a;
+    margin-top: 5vh;
+    border-radius: 10px;
+    box-sizing: border-box;
+    padding: 2vh;
+}
+.update-version{
+    font-weight: bold;
+    color: #fff;
+    font-family: 'Noto Sans';
+    font-size: 1.1em;
+}
+.update p{
+    color: #ccc;
+    font-family: 'Discord';
+}
+.header-buttons div{
+    background: #202131;
+    padding: 2vh;
+    box-sizing: border-box;
+    -webkit-app-region: none;
+    margin-top: 1vh;
+}
+.header-buttons div:hover{
+    background-color: #2a2b3a;
+    cursor: pointer;
+}
 body,html{
     height: 100%;
     width:100%;
     overflow: hidden;
+}
+.updater-window{
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    z-index: 2;
+    padding: 30vh 0;
+    text-align: center;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    background: linear-gradient(134.22deg, #27293E 2.12%, #090909 100.79%);
 }
 .app{
     background-color: red;
@@ -42,7 +98,7 @@ body,html{
     margin-left: 10px;
 }
 [show="false"]{
-    display: none;
+    display: none !important;
 }
 .discord-preview{
     margin-left: 2vw;
@@ -276,4 +332,11 @@ option{
     color: #fff;
     font-family: 'Syncopate';
     text-transform: uppercase;
+}
+.app-version{
+    color: #ccc;
+    font-family: 'Discord';
+    position: absolute;
+    bottom: 5px;
+    left: 20px;
 }

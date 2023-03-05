@@ -12,7 +12,16 @@
 </head>
 
 <body >
+  
     <div class="app">
+        <div class="updater-window">
+            <h1 class="logo">IMCLIENT</h1>
+            <span class="user-name">Проверка на наличие обновлений</span>
+        </div>
+        <div class="header-buttons">
+            <div class="minimize">_</div>
+            <div class="exit">X</div>
+        </div>
         <div class="background-popup hidden"></div>
         <div class="popup hidden"> 
             <div class="discord-preview">
@@ -26,13 +35,14 @@
             
         </div>
        <div class="menu">
-            <h1 class="logo">IMCLIENT 1.2</h1>
+
+            <h1 class="logo">IMCLIENT</h1>
             <a class="btn-styled menu-btn" onclick="page('accounts')">Аккаунты</a>
             <a class="btn-styled menu-btn" onclick="page('messages')">Сообщения</a>
             <a class="btn-styled menu-btn" onclick="page('settings')">Настройки</a>
-            <a class="btn-styled menu-btn" onclick="page('support')">Поддержка</a>
             <a class="btn-styled menu-btn" onclick="page('updates')">Обновления</a>
             <a class="btn-styled menu-btn" onclick="page('logs')">Логи</a>
+            <span class="app-version"></span>
        </div>
        <div class="window">
             <div class="accounts main" show="false">
@@ -47,10 +57,17 @@
                     </div> -->
                 </div>
             </div>
-            <div class="messages main" show="true">
+            <div class="messages main" show="false">
                 <h3 class="logo">Сообщения</h3>
                 <a class="second-btn-styled" style="width: 16vw; margin-top: 2vh;" onclick="page('edit')">Новый шаблон</a>
                 <div class="messages-list"></div>
+            </div>
+            <div class="updates main" show="true">
+                <h3 class="logo">Обновления</h3>
+                <div class="updates-wrapper">
+                    
+                </div>
+                
             </div>
             <div class="edit main" show="false">
                 <h3 class="logo">Редактирование шаблона</h2>
@@ -82,12 +99,13 @@
             </div>
             <div class="support main" show="false"></div>
             <div class="updates main" show="false"></div>
-            <div class="logs main" show="false"></div>
+            <div class="logs main" show="false">
+                
+            </div>
        </div>
     </div>
     <script>
     </script>
-    <script src="./scripts/requests.js"></script>
     <script src="./scripts/app-local.js"></script>
 </body>
 
